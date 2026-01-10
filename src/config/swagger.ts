@@ -1,6 +1,11 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+// Determine the correct file extension and path based on environment
+const isProduction = process.env.NODE_ENV === 'production';
+const fileExtension = isProduction ? 'js' : 'ts';
+const basePath = isProduction ? './dist' : './src';
+
 const options: swaggerJsdoc.Options = {
     definition: {
         openapi: '3.0.0',
@@ -19,12 +24,10 @@ const options: swaggerJsdoc.Options = {
         },
         servers: [
             {
-                url: 'http://localhost:5000',
-                description: 'Development server'
-            },
-            {
-                url: 'https://your-production-url.com',
-                description: 'Production server'
+                url: process.env.NODE_ENV === 'production'
+                    ? 'https://city-school-backend.onrender.com'
+                    : 'http://localhost:5000',
+                description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Development server'
             }
         ],
         components: {
@@ -103,7 +106,10 @@ const options: swaggerJsdoc.Options = {
             }
         ]
     },
-    apis: ['./src/routes/**/*.ts', './src/controllers/**/*.ts']
+    apis: [
+        `${basePath}/routes/**/*.${fileExtension}`,
+        `${basePath}/controllers/**/*.${fileExtension}`
+    ]
 };
 
 const swaggerSpec = swaggerJsdoc(options);
