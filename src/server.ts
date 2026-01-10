@@ -6,9 +6,11 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db';
 import errorHandler from './middleware/error';
+import { swaggerUi, swaggerSpec } from './config/swagger';
 
 // Route files
 import auth from './routes/v1/auth';
+import health from './routes/v1/health';
 
 // Load env vars
 dotenv.config();
@@ -39,12 +41,23 @@ app.use(cors({
     credentials: true
 }));
 
+// Swagger API Documentation
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'City School API Docs'
+}));
+
 // Basic route
 app.get('/', (req: Request, res: Response) => {
-    res.json({ message: 'Welcome to City School API (v1)' });
+    res.json({
+        message: 'Welcome to City School API (v1)',
+        documentation: '/api/docs',
+        health: '/api/v1/health'
+    });
 });
 
 // Mount routers
+app.use('/api/v1/health', health);
 app.use('/api/v1/auth', auth);
 
 // Use error handler
