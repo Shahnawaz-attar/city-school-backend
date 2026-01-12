@@ -44,6 +44,11 @@ app.get('/', (req: Request, res: Response) => {
     res.json({ message: 'Welcome to City School API (v1)' });
 });
 
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
+
 // Mount routers
 app.use('/api/v1/auth', auth);
 
