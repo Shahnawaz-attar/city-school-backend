@@ -56,9 +56,7 @@ app.get('/', (req: Request, res: Response) => {
     });
 });
 
-app.get("/", (req, res) => {
-  res.send("API is running 🚀");
-});
+
 
 
 // Mount routers
