@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: city-school-backend
+    runtime: node
+    buildCommand: yarn install && yarn build
+    startCommand: yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
